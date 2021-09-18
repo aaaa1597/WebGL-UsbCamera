@@ -1,0 +1,45 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>WebRTC + WebGL サンプル</title>
+		<script src="matrix.js" type="text/javascript"></script>
+		<script src="script.js" type="text/javascript"></script>
+
+		<script id="vs" type="x-shader/x-vertex">
+attribute vec3 a_Vertex3;
+attribute vec4 a_Color;
+attribute vec2 a_TexCoord;
+uniform   mat4 u_MvpMatrix;
+varying   vec4 vColor;
+varying   vec2 vTexCoord;
+
+void main(void){
+	vColor = a_Color;
+	vTexCoord = a_TexCoord;
+	gl_Position  = u_MvpMatrix * vec4(a_Vertex3, 1.0);
+}
+		</script>
+
+		<script id="fs" type="x-shader/x-fragment">
+precision mediump float;
+
+uniform sampler2D u_TexSampler;
+varying vec4      vColor;
+varying vec2      vTexCoord;
+
+void main(void){
+	vec4 texcolor = texture2D(u_TexSampler, vTexCoord);
+	gl_FragColor  = vColor * texcolor;
+}
+		</script>
+		<style>
+		canvas {
+			background-color: black;
+		}
+		</style>
+	</head>
+	<body>
+		<div><canvas id="canvas"></canvas></div>
+                <input type="range" name="speed" min="0" max="100">
+	</body>
+</html>
